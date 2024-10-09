@@ -4,21 +4,6 @@ const path = require('path');
 let items = [];
 let categories = [];
 
-/*
-function initialize() {
-    return new Promise((resolve, reject) => {
-        try {
-            items = JSON.parse(fs.readFileSync('./data/items.json', 'utf-8'));
-            categories = JSON.parse(fs.readFileSync('./data/categories.json', 'utf-8'));
-            resolve();
-        }
-        catch (err) {
-            reject("Unable to read data files: " + err);
-        }
-    });
-}
-*/
-
 function initialize() {
     return new Promise((resolve, reject) => {
         fs.readFile(path.join(__dirname, './data/items.json'), 'utf8', (err, data) => {

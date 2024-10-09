@@ -6,8 +6,8 @@ I declare that this assignment is my own work in accordance with Seneca  Academi
 Name: Lyndsey Rasco 
 Student ID: 173670233
 Date: October 6, 2024
-Cyclic Web App URL: _______________________________________________________
-GitHub Repository URL: ______________________________________________________
+Cyclic Web App URL: https://replit.com/@lyndseytrasco/web322-app
+GitHub Repository URL: https://github.com/lynrasco/web322-app.git
 
 ********************************************************************************/ 
 //REMEMBER TO DEPLOY TO REPLIT INSTEAD OF CYCLIC!!!!!!!!1
