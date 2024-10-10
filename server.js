@@ -49,7 +49,7 @@ app.get('/items', (req, res) => {
             res.json(data);
         })
         .catch((err) => {
-            res.status(500).json({ message: err });
+            res.status(500).json(`${err.message}`);
         });
 });
 
@@ -60,7 +60,7 @@ app.get('/categories', (req, res) => {
             res.json(data);
         })
         .catch((err) => {
-            res.status(500).json({ message: err });
+            res.status(500).json(`${err.message}`);
         });
 });
 
@@ -72,7 +72,7 @@ app.get('/shop', (req, res) => {
             res.json(data);
         })
         .catch((err) => {
-            res.status(500).json({ message: err});
+            res.status(500).json(`${err.message}`);
         });
 });
 
