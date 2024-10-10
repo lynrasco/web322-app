@@ -1,8 +1,8 @@
 body {
-    font-family:'Times New Roman', Times, serif;
     color:dodgerblue;
 }
 
 h2 {
-    font-size: small;
+    font-size: large;
+    font-weight: bold;
 }
