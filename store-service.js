@@ -38,13 +38,6 @@ function initialize() {
     });
 }
 
-//Old getAllItems() function
-/*
-function getAllItems() {
-    return items;
-}
-*/
-
 function getAllItems() {
     return new Promise((resolve, reject) => {
         if (items.length > 0) {
@@ -68,13 +61,6 @@ function getPublishedItems() {
     });
 }
 
-//Old getAllCategories() function
-/*
-function getAllCategories() {
-    return categories;
-}
-*/
-
 function getAllCategories() {
     return new Promise((resolve, reject) => {
         if (categories.length > 0) {
@@ -86,10 +72,62 @@ function getAllCategories() {
     });
 }
 
+function addItem(itemData) {
+    return new Promise((resolve, reject) => {
+        try {
+            itemData.published = itemData.published === undefined ? false : true;
+            itemData.id = items.length + 1; 
+            items.push(itemData);
+            resolve(itemData);
+        } catch (err) {
+            reject(err);
+        }
+    });
+}
+
+function getItemsByCategory(category) {
+    return new Promise((resolve, reject) => {
+        const filteredItems = items.filter(items => item.category === category);
+        if (filteredItems.length > 0) {
+            resolve(filteredItems);
+        }
+        else {
+            reject("No results returned");
+        }
+    });
+}
+
+function getItemsByMinDate(minDateStr) {
+    return new Promise((resolve, reject) => {
+        const filteredItems = items.filter(item => new Date(item.postDate) >= new Date(minDateStr));
+        if (filteredItems.length > 0) {
+            resolve(filteredItems);
+        }
+        else {
+            reject("No results returned");
+        }
+    });
+}
+
+function getItemById(id) {
+    return new Promise((resolve, reject) => {
+        const foundItem = items.find(item => item.id === id);
+        if (foundItem) {
+            resolve(foundItem);
+        }
+        else {
+            reject("No results returned");
+        }
+    });
+}
+
 module.exports = {
     initialize,
     getAllItems,
     getPublishedItems,
-    getAllCategories
-    //getCategories
+    getAllCategories,
+    addItem,
+    getItemsByCategory,
+    getItemsByMinDate,
+    getItemById
 };
