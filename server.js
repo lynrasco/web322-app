@@ -124,11 +124,7 @@ app.get('/items', (req, res) => {
         });
     }
     else {
-        res.json(storeService.getAllItems()).then(items => {
-            res.json(items);
-        }).catch(error => {
-            res.status(404).send(error);
-        });
+        res.json(storeService.getAllItems());
     }
 });
 
@@ -146,8 +142,8 @@ app.get('/categories', (req, res) => {
         .then((data) => {
             res.json(data);
         })
-        .catch((err) => {
-            res.status(500).json(`${err.message}`);
+        .catch(error => {
+            res.status(404).send(error);
         });
 });
 
