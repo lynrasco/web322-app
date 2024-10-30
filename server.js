@@ -109,12 +109,6 @@ app.get('/items', (req, res) => {
         }).catch(error => {
             res.status(404).send(error);
         });
-    storeService.getAllItems()
-        .then((data) => {
-            res.json(data);
-        }).catch(error => {
-            res.status(404).send(error);
-        });
     }
     else if (minDate) {
         storeService.getItemsByMinDate(minDate).then(items => {
