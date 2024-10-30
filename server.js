@@ -102,12 +102,22 @@ storeService.initialize().then(() => {
 
 
 app.get('/items', (req, res) => {
+<<<<<<< HEAD
     const { category, minDate } = req.query;
     if (category) {
         storeService.getItemsByCategory(Number(category)).then(items => {
             res.json(items);
         }).catch(error => {
             res.status(404).send(error);
+=======
+    //res.json(storeService.getAllItems());
+    storeService.getAllItems()
+        .then((data) => {
+            res.json(data);
+        })
+        .catch((err) => {
+            res.status(500).json(`${err.message}`);
+>>>>>>> e543122a4b520d3f88b7d3a239c7494fb9e76f1c
         });
     }
     else if (minDate) {
@@ -141,7 +151,7 @@ app.get('/categories', (req, res) => {
             res.json(data);
         })
         .catch((err) => {
-            res.status(500).json({ message: err });
+            res.status(500).json(`${err.message}`);
         });
 });
 
@@ -151,7 +161,7 @@ app.get('/shop', (req, res) => {
             res.json(data);
         })
         .catch((err) => {
-            res.status(500).json({ message: err});
+            res.status(500).json(`${err.message}`);
         });
 });
 
