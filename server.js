@@ -118,7 +118,12 @@ app.get('/items', (req, res) => {
         });
     }
     else {
-        res.json(storeService.getAllItems());
+        //res.json(storeService.getAllItems());
+        storeService.getAllItems().then(items => {
+            res.json(items);
+        }).catch(error => {
+            res.status(404).send(error);
+        });
     }
 });
 

@@ -87,7 +87,7 @@ function addItem(itemData) {
 
 function getItemsByCategory(category) {
     return new Promise((resolve, reject) => {
-        const filteredItems = items.filter(items => item.category === category);
+        const filteredItems = items.filter(items => items.category === category);
         if (filteredItems.length > 0) {
             resolve(filteredItems);
         }
@@ -111,7 +111,7 @@ function getItemsByMinDate(minDateStr) {
 
 function getItemById(id) {
     return new Promise((resolve, reject) => {
-        const foundItem = items.find(item => item.id === id);
+        const foundItem = items.find(item => item.id === Number(id));
         if (foundItem) {
             resolve(foundItem);
         }
