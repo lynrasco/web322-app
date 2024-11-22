@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const itemsFilePath = path.join(__dirname, 'data', 'items.json');
 
 let items = [];
 let categories = [];
@@ -12,7 +13,8 @@ function initialize() {
                 return;
             }
             try {
-                items =JSON.parse(data);
+                items = JSON.parse(data);
+                
             }
             catch (err) {
                 reject("ERROR: Cannot parse items.json data");
@@ -51,12 +53,15 @@ function getAllItems() {
 
 function getPublishedItems() {
     return new Promise((resolve, reject) => {
-        const publishedItems = items.filter(item => item.published === true);
-        if (publishedItems.length > 0) {
-            resolve(publishedItems);
-        }
-        else {
-            reject("ERROR: No results returned");
+        if (items.length > 0) {
+            const publishedItems = items.filter(item => item.published === true);
+            if (publishedItems.length > 0) {
+                resolve(publishedItems);
+            } else {
+                reject("ERROR: No results returned");
+            }
+        } else {
+            reject("ERROR: Items not initialized");
         }
     });
 }
@@ -74,14 +79,25 @@ function getAllCategories() {
 
 function addItem(itemData) {
     return new Promise((resolve, reject) => {
-        try {
-            itemData.published = itemData.published === undefined ? false : true;
-            itemData.id = items.length + 1; 
-            items.push(itemData);
-            resolve(itemData);
-        } catch (err) {
-            reject(err);
-        }
+        // Create a new item object
+        const newItem = {
+            ...itemData,  // Merge the incoming item data
+            id: items.length + 1,  // Generate a new ID (or use another method to generate unique IDs)
+            published: false,  // Default to false, update if needed
+            postDate: new Date().toISOString().split('T')[0]  // Set postDate in YYYY-MM-DD format
+        };
+
+        // Add the new item to the items array
+        items.push(newItem);
+
+        // Save the updated items array back to the items.json file
+        fs.writeFile(itemsFilePath, JSON.stringify(items, null, 2), (err) => {
+            if (err) {
+                reject('ERROR: Failed to save new item');
+            } else {
+                resolve(newItem);  // Return the newly added item
+            }
+        });
     });
 }
 
@@ -110,14 +126,24 @@ function getItemsByMinDate(minDateStr) {
 }
 
 function getItemById(id) {
+   return new Promise((resolve, reject) => {
+    if (items.length > 0) {
+        const item = items.find((item) => item.id === parseInt(id));
+        if (item) {
+            resolve(item);
+        } else {
+            reject(`No item found with id: ${id}`);
+        }
+    } else {
+        reject("ERROR: Items not initialized");
+    }
+   });
+}
+
+function getPublishedItemsByCategory(category) {
     return new Promise((resolve, reject) => {
-        const foundItem = items.find(item => item.id === Number(id));
-        if (foundItem) {
-            resolve(foundItem);
-        }
-        else {
-            reject("No results returned");
-        }
+        const filteredItems = items.filter(item => item.category == category); // Compare as strings or numbers based on your data
+        resolve(filteredItems);
     });
 }
 
@@ -129,5 +155,6 @@ module.exports = {
     addItem,
     getItemsByCategory,
     getItemsByMinDate,
-    getItemById
+    getItemById,
+    getPublishedItemsByCategory
 };
