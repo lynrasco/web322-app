@@ -5,7 +5,7 @@ I declare that this assignment is my own work in accordance with Seneca  Academi
 
 Name: Lyndsey Rasco 
 Student ID: 173670233
-Date: November 11, 2024
+Date: November 22, 2024
 Cyclic Web App URL: https://replit.com/@lyndseytrasco/web322-app
 GitHub Repository URL: https://github.com/lynrasco/web322-app.git
 
@@ -37,12 +37,6 @@ const HTTP_PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-
-/*
-const safeHTML = (html) => {
-    return html.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-};
-*/
 
 app.set("view engine", ".ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -153,7 +147,7 @@ app.get('/', (req, res) => {
 
 app.get('/about', (req, res) => {
     //res.sendFile(path.join(__dirname, '/views/about.html'));
-    res.render("about", { title: "About Us", activeRoute: '/about'});
+    res.render("about", { title: "About Us" });
 });
 
 storeService.initialize().then(() => {
@@ -166,58 +160,26 @@ storeService.initialize().then(() => {
 
 
 app.get('/items', async (req, res) => {
-    /*
-   try {
-     const data = await fetchData();
+    try {
+        const data = await fetchData();
+        const category = req.query.category; 
 
-     if (data.length > 0) {
-        res.render("items", {items: data });
-     } else {
-        res.render("items", { message: "No results"});
-     }
-   } catch (error) {
-    console.error("Error in /items route:", error); // Log the error for debugging
-    res.render("items", { message: "No results"});
-   }
-   */
-  /*
-   try {
-    const data = await fetchData(); // Fetch the items from your JSON or database
-    if (data && data.length > 0) {
-        // If there are items, render the view and pass the items to it
-        res.render("items", { items: data });
-    } else {
-        // If no items found, render with a message
-        res.render("items", { message: "No results" });
+        let filteredItems = data;
+
+        if (category) {
+            filteredItems = data.filter(item => item.category == category);
+        }
+
+        const message = filteredItems && filteredItems.length > 0 
+            ? null 
+            : "ERROR: No results found for the selected category.";
+
+       
+        res.render("items", { items: filteredItems, message });
+    } catch (error) {
+        console.error("ERROR: in /items route:", error); 
+        res.render("items", { items: [], message: "ERROR: Please try again." });
     }
-} catch (error) {
-    console.error("Error in /items route:", error);
-    res.render("items", { message: "No results" });
-}
-*/
-try {
-    const data = await fetchData(); // Fetch the items from your JSON or database
-    const category = req.query.category; // Get the category from the query parameter
-
-    let filteredItems = data;
-
-    // If a category query parameter is provided, filter the items
-    if (category) {
-        filteredItems = data.filter(item => item.category == category);
-    }
-
-    if (filteredItems && filteredItems.length > 0) {
-        // Render the view with the filtered items
-        res.render("items", { items: filteredItems });
-    } else {
-        // If no items match the filter, render with a message
-        res.render("items", { message: "No results" });
-    }
-} catch (error) {
-    console.error("Error in /items route:", error); // Log the error for debugging
-    res.render("items", { message: "No results"});
-}
-res.render('items', { activeRoute: '/items' });
 });
 
 app.get('/item/:id', (req, res) => {
@@ -241,7 +203,6 @@ app.get('/categories', (req, res) => {
         res.render('categories', {message: 'Error loading categories'});
      }
    });
-   res.render('categories', { activeRoute: '/categories' });
 });
 
 app.get('/items/category/:category', (req, res) => {
@@ -307,7 +268,7 @@ app.get("/shop", async (req, res) => {
 
 app.get('/items/add', (req, res) => {
     //res.sendFile(path.join(__dirname, 'views', 'addItem.html'));
-    res.render("addItem", { activeRoute: '/items/add' });
+    res.render("addItem");
 });
 
 

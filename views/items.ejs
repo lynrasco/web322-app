@@ -25,15 +25,14 @@
               </tr>
           <% }); %>
         <% } else { %>
-          <tr><td colspan="5">No items found.</td></tr>
+          <tr><td colspan="6">No items found.</td></tr>
         <% } %>
       </tbody>
   </table>
 </div>
 
-
 <div class="col-md-12 text-center">
-  <% if (!items || items.length === 0) { %>
+  <% if (message) { %>
       <strong><%= message %></strong>
   <% } %>
 </div>
